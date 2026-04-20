@@ -12,7 +12,7 @@ import { Save, CheckCircle2 } from "lucide-react";
 const studentsByClass: Record<string, Array<{ name: string; mark: string }>> = {
     "10a": [
         { name: "Sita Janaki", mark: "85" },
-        { name: "Anil Sarkar", mark: "72" },
+        { name: "Anil Sarkar", mark: "89" },
         { name: "Bibek Jha", mark: "" },
         { name: "Priya Singh", mark: "90" },
         { name: "Rahul Kumar", mark: "78" },

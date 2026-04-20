@@ -13,6 +13,11 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
     ...authConfig,
     providers: [
         Credentials({
+            credentials: {
+                email: { label: "Email", type: "email" },
+                password: { label: "Password", type: "password" },
+                role: { label: "Role", type: "text" },
+            },
             async authorize(credentials) {
                 const parsedCredentials = z
                     .object({
@@ -59,7 +64,12 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                         // Simple password match for now
                         if (password === user.password) {
                             console.log("Password match success");
-                            return user;
+                            return {
+                                id: String(user.id),
+                                name: user.name,
+                                email: user.email,
+                                role: user.role,
+                            } as any;
                         } else {
                             console.log("Password mismatch");
                             console.log("Expected:", user.password);
