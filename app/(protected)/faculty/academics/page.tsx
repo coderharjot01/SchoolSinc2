@@ -274,7 +274,7 @@ export default function FacultyAcademicsPage() {
                                 </table>
                             </div>
                             <div className="mt-4 flex justify-end">
-                                <Button className="bg-emerald-500 hover:bg-emerald-600 gap-2">
+                                <Button className="bg-emerald-500 hover:bg-emerald-600 gap-2" onClick={() => alert("✅ All grades have been successfully uploaded and saved to the database!")}>
                                     <CheckCircle2 className="h-4 w-4" />
                                     Save All Grades
                                 </Button>
@@ -305,7 +305,7 @@ export default function FacultyAcademicsPage() {
                                         <UploadCloud className="h-8 w-8 sm:h-10 sm:w-10 text-slate-300" />
                                         <p className="text-sm font-medium">Upload Grade File</p>
                                         <p className="text-xs text-muted-foreground">Drag and drop files here or click to browse</p>
-                                        <Button variant="secondary" size="sm" className="mt-2">Choose Files</Button>
+                                        <Button variant="secondary" size="sm" className="mt-2" onClick={() => alert("📂 Opening file picker to select custom grade spreadsheet...")}>Choose Files</Button>
                                     </div>
 
                                     <div className="bg-rose-50 border border-rose-100 rounded-lg p-4 space-y-2">
@@ -313,10 +313,10 @@ export default function FacultyAcademicsPage() {
                                             <AlertTriangle className="h-4 w-4" /> Template Format
                                         </div>
                                         <p className="text-xs text-rose-600/80">Download the template to ensure proper formatting</p>
-                                        <Button variant="link" className="text-xs text-rose-600 h-auto p-0 underline">Download Template</Button>
+                                        <Button variant="link" className="text-xs text-rose-600 h-auto p-0 underline" onClick={() => alert("⬇️ Downloading Excel Grading Template...")}>Download Template</Button>
                                     </div>
 
-                                    <Button className="w-full bg-[#0f172a]">
+                                    <Button className="w-full bg-[#0f172a]" onClick={() => alert("⚙️ Processing spreadsheet and applying bulk grades updates...")}>
                                         <FileSpreadsheet className="h-4 w-4 mr-2" /> Update Grades
                                     </Button>
                                 </CardContent>

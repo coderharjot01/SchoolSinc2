@@ -18,6 +18,7 @@ import {
     TrendingUp,
     Receipt,
     Wallet,
+    Sparkles,
     CreditCard as CardIcon
 } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -59,6 +60,27 @@ export default function ParentFinance() {
                 title="Fee Payment"
                 subtitle="Online payment options and fee details for your child"
             />
+
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 shadow-xl border border-emerald-400/20 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-white/5 opacity-10 animate-pulse"></div>
+                <div className="absolute -right-12 -top-12 h-48 w-48 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all duration-700"></div>
+                <div className="absolute -left-12 -bottom-12 h-48 w-48 bg-teal-900/40 rounded-full blur-3xl"></div>
+                
+                <div className="relative flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-5">
+                        <div className="h-14 w-14 bg-white/15 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-inner border border-white/20">
+                            <Sparkles className="h-7 w-7 text-white animate-bounce" />
+                        </div>
+                        <div className="text-center sm:text-left">
+                            <h3 className="text-white font-extrabold text-xl sm:text-2xl tracking-tight">Parental Payment Gateway</h3>
+                            <p className="text-emerald-100/90 text-sm sm:text-base font-medium mt-1">This function will be live soon. We're simplifying school fee management!</p>
+                        </div>
+                    </div>
+                    <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-white/30 px-4 py-1.5 rounded-full text-xs font-bold backdrop-blur-md">
+                        🛠️ UNDER DEVELOPMENT
+                    </Badge>
+                </div>
+            </div>
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

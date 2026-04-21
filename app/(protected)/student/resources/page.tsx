@@ -15,14 +15,18 @@ const contentTypeConfig: Record<string, { icon: React.ElementType; bgColor: stri
     "Image": { icon: ImageIcon, bgColor: "bg-purple-50 dark:bg-purple-900/20", iconColor: "text-purple-500", label: "Diagram" },
 };
 
+import { useState, useEffect } from "react";
+
 export default function StudentResourcesPage() {
-    const resources = [
-        { id: 1, title: "Physics Chapter 5 Notes", subject: "Physics", type: "PDF", size: "2.5 MB", date: "Dec 05", isRecommended: true, views: 128 },
-        { id: 2, title: "Math Calculus Formulas", subject: "Math", type: "PDF", size: "1.2 MB", date: "Dec 03", isRecommended: false, views: 89 },
-        { id: 3, title: "Chemical Bonding Lecture", subject: "Chemistry", type: "Video", size: "150 MB", date: "Nov 28", isRecommended: true, views: 256 },
-        { id: 4, title: "English Grammar Workbook", subject: "English", type: "Worksheet", size: "4.0 MB", date: "Nov 25", isRecommended: false, views: 45 },
-        { id: 5, title: "Biology Diagram Set", subject: "Biology", type: "Image", size: "5.5 MB", date: "Nov 20", isRecommended: false, views: 72 },
-    ];
+    const [resources, setResources] = useState<any[]>([]);
+
+    useEffect(() => {
+        fetch("/api/resources")
+            .then(res => res.json())
+            .then(data => setResources(data))
+            .catch(err => console.error(err));
+    }, []);
+
 
     return (
         <div className="space-y-6">
@@ -110,6 +114,21 @@ export default function StudentResourcesPage() {
                                         <span className="text-xs text-muted-foreground font-medium">{item.size}</span>
                                         <Button
                                             size="sm"
+                                            onClick={() => {
+                                                if (item.type === "Video") {
+                                                    window.open(item.url || "https://www.youtube.com", "_blank");
+                                                } else {
+                                                    const link = document.createElement("a");
+                                                    link.href = item.url;
+                                                    link.target = "_blank";
+                                                    if(item.url.startsWith("http")) { link.download = ""; } else {
+                                                       link.download = item.title.replace(/ /g, "_") + (item.type === "PDF" ? ".pdf" : ".txt");
+                                                    }
+                                                    document.body.appendChild(link);
+                                                    link.click();
+                                                    document.body.removeChild(link);
+                                                }
+                                            }}
                                             className={`h-8 sm:h-9 text-xs sm:text-sm gap-1.5 ${item.type === "Video"
                                                 ? "bg-blue-600 hover:bg-blue-700"
                                                 : "bg-slate-900 hover:bg-slate-800"

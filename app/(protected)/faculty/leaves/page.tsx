@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +9,29 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Send } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
+import { addDays, format, parseISO } from "date-fns";
 
 export default function FacultyLeavePage() {
+    const [leaveType, setLeaveType] = useState("Sick Leave");
+    const [totalDays, setTotalDays] = useState(1);
+    const [startDate, setStartDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+    const [endDate, setEndDate] = useState("");
+
+    // Automatically calculate end date when start date or total days change
+    useEffect(() => {
+        if (startDate && totalDays > 0) {
+            const start = parseISO(startDate);
+            // end date = start date + (total days - 1)
+            const calculatedEnd = addDays(start, totalDays - 1);
+            setEndDate(format(calculatedEnd, 'yyyy-MM-dd'));
+        }
+    }, [startDate, totalDays]);
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        alert(`Leave Application Submitted!\nType: ${leaveType}\nFrom: ${startDate}\nTo: ${endDate}\nDays: ${totalDays}`);
+    };
+
     return (
         <div className="space-y-4 sm:space-y-6">
             <PageHeader
@@ -26,11 +48,16 @@ export default function FacultyLeavePage() {
                         <CardDescription className="text-sm">Fill out the form below to request leave.</CardDescription>
                     </CardHeader>
                     <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
-                        <form className="space-y-4">
+                        <form className="space-y-4" onSubmit={handleSubmit}>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="type" className="text-sm">Leave Type</Label>
-                                    <select id="type" className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+                                    <select 
+                                        id="type" 
+                                        value={leaveType}
+                                        onChange={(e) => setLeaveType(e.target.value)}
+                                        className="w-full flex h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    >
                                         <option>Sick Leave</option>
                                         <option>Casual Leave</option>
                                         <option>Earned Leave</option>
@@ -38,24 +65,42 @@ export default function FacultyLeavePage() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="days" className="text-sm">Total Days</Label>
-                                    <Input id="days" type="number" placeholder="1" />
+                                    <Input 
+                                        id="days" 
+                                        type="number" 
+                                        min={1}
+                                        value={totalDays}
+                                        onChange={(e) => setTotalDays(parseInt(e.target.value) || 0)}
+                                        placeholder="1" 
+                                    />
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="start" className="text-sm">Start Date</Label>
-                                    <Input id="start" type="date" />
+                                    <Input 
+                                        id="start" 
+                                        type="date" 
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                    />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="end" className="text-sm">End Date</Label>
-                                    <Input id="end" type="date" />
+                                    <Label htmlFor="end" className="text-sm">End Date (Calculated)</Label>
+                                    <Input 
+                                        id="end" 
+                                        type="date" 
+                                        value={endDate}
+                                        readOnly
+                                        className="bg-slate-50 dark:bg-slate-900 cursor-not-allowed"
+                                    />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="reason" className="text-sm">Reason</Label>
                                 <Textarea id="reason" placeholder="Please specify the reason for your leave..." className="min-h-[100px]" />
                             </div>
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
                                 <Send className="mr-2 h-4 w-4" /> Submit Application
                             </Button>
                         </form>

@@ -18,7 +18,7 @@ const studentData = {
     religion: "Hindu",
     dob: "15 Aug 2008",
     admissionYear: "2023",
-    university: "SchoolSync High School",
+    university: "HS21Schools High School",
     currentSemester: "10th Grade",
     bloodGroup: "O+",
     currentSection: "10-A",
@@ -29,8 +29,8 @@ const studentData = {
 };
 
 const qualificationData = [
-    { qualification: "9th", stream: "Science", institute: "SchoolSync High School", board: "CBSE", year: "2024", percent: "85.6", remarks: "" },
-    { qualification: "8th", stream: "General", institute: "SchoolSync Middle School", board: "CBSE", year: "2023", percent: "82.4", remarks: "" },
+    { qualification: "9th", stream: "Science", institute: "HS21Schools High School", board: "CBSE", year: "2024", percent: "85.6", remarks: "" },
+    { qualification: "8th", stream: "General", institute: "HS21Schools Middle School", board: "CBSE", year: "2023", percent: "82.4", remarks: "" },
 ];
 
 const contactData = [
@@ -210,9 +210,9 @@ export default function ProfileClient({ userName, userEmail }: ProfileClientProp
 
             {/* Footer */}
             <div className="text-center text-xs text-slate-400 py-4">
-                <p>SchoolSync High School, City, State</p>
+                <p>HS21Schools High School, City, State</p>
                 <p>General Helpline No: 1800-XXX-XXXX</p>
-                <p>Email Id: support@schoolsync.edu</p>
+                <p>Email Id: support@hs21schools.edu</p>
             </div>
         </div>
     );

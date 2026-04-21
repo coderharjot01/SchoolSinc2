@@ -27,6 +27,7 @@ import {
     ChevronUp,
     Plane,
     LucideIcon,
+    CalendarDays,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -76,6 +77,7 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                         { label: "Student Management", href: "/admin/students", icon: Users },
                         { label: "Staff Management", href: "/admin/staff", icon: Briefcase },
                         { label: "Fee and Finance", href: "/admin/finance", icon: CreditCard },
+                        { label: "Leave Management", href: "/admin/leaves", icon: CalendarDays },
                     ]
                 },
                 {
@@ -178,8 +180,9 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                 items: [
                     { label: "Timetable", href: "/parent/timetable", icon: Clock },
                     { label: "Resources", href: "/parent/resources", icon: BookOpen },
-                    { label: "Assignments", href: "/parent/exams", icon: FileText },
-                    { label: "Grades & Reports", href: "/parent/performance", icon: BarChart2 },
+                    { label: "Exams & Events", href: "/parent/exams", icon: FileText },
+                    { label: "Grades & Performance", href: "/parent/performance", icon: BarChart2 },
+                    { label: "Academic Reports", href: "/parent/reports", icon: ClipboardList },
                 ]
             },
             {
@@ -234,8 +237,8 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                     <Link href={`/${role}/dashboard`} className="flex items-center gap-2">
                         <Building2 className="h-7 w-7 text-blue-500" strokeWidth={2} />
                         <div>
-                            <span className="text-lg font-bold text-blue-500">School</span>
-                            <span className="text-lg font-bold text-orange-500">Sync</span>
+                            <span className="text-lg font-bold text-blue-500">HS21</span>
+                            <span className="text-lg font-bold text-orange-500 ml-1">Schools</span>
                         </div>
                     </Link>
                     <button

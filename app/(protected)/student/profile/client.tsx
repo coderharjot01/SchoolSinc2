@@ -47,7 +47,7 @@ const studentData = {
     religion: "Hindu",
     dob: "15 Aug 2008",
     admissionYear: "2023",
-    university: "SchoolSync High School",
+    university: "HS21Schools High School",
     currentSemester: "10th Grade",
     bloodGroup: "O+",
     currentSection: "10-A",
@@ -64,9 +64,9 @@ const studentData = {
 };
 
 const qualificationData = [
-    { qualification: "10th", stream: "Science", institute: "SchoolSync High School", board: "CBSE", year: "2025", percent: null, remarks: "current", status: "in-progress" },
-    { qualification: "9th", stream: "Science", institute: "SchoolSync High School", board: "CBSE", year: "2024", percent: "85.6", remarks: "Passed with Distinction", status: "completed" },
-    { qualification: "8th", stream: "General", institute: "SchoolSync Middle School", board: "CBSE", year: "2023", percent: "82.4", remarks: "Passed", status: "completed" },
+    { qualification: "10th", stream: "Science", institute: "HS21Schools High School", board: "CBSE", year: "2025", percent: null, remarks: "current", status: "in-progress" },
+    { qualification: "9th", stream: "Science", institute: "HS21Schools High School", board: "CBSE", year: "2024", percent: "85.6", remarks: "Passed with Distinction", status: "completed" },
+    { qualification: "8th", stream: "General", institute: "HS21Schools Middle School", board: "CBSE", year: "2023", percent: "82.4", remarks: "Passed", status: "completed" },
 ];
 
 const contactData = {
@@ -460,8 +460,8 @@ export default function ProfileClient({ userName, userEmail }: ProfileClientProp
 
             {/* Footer */}
             <div className="text-center text-xs text-slate-400 py-4 space-y-1">
-                <p className="font-medium">SchoolSync High School, Kathmandu, Nepal</p>
-                <p>General Helpline: 1800-XXX-XXXX • support@schoolsync.edu</p>
+                <p className="font-medium">HS21Schools High School, Kathmandu, Nepal</p>
+                <p>General Helpline: 1800-XXX-XXXX • support@hs21schools.edu</p>
             </div>
         </div>
     );

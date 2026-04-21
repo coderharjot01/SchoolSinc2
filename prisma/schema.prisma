@@ -3,24 +3,19 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  FACULTY
-  STUDENT
-  PARENT
-}
+// Enums removed for SQLite compatibility.
+// Role values: ADMIN, FACULTY, STUDENT, PARENT
 
 model User {
   id        String   @id @default(cuid())
   email     String   @unique
   password  String
   name      String?
-  role      Role     @default(STUDENT)
+  role      String   @default("STUDENT")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -67,26 +62,16 @@ model AttendanceLog {
   @@unique([studentId, date, period])
 }
 
-enum RequestType {
-  NOC
-  LOAN
-  BONAFIDE
-}
-
-enum RequestStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  GENERATED
-}
+// RequestType values: NOC, LOAN, BONAFIDE
+// RequestStatus values: PENDING, APPROVED, REJECTED, GENERATED
 
 model ServiceRequest {
   id        String        @id @default(cuid())
   userId    String
   user      User          @relation(fields: [userId], references: [id])
-  type      RequestType
+  type      String
   reason    String
-  status    RequestStatus @default(PENDING)
+  status    String        @default("PENDING")
   documentUrl String?
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
@@ -104,13 +89,15 @@ model Exam {
 }
 
 model Resource {
-  id        String   @id @default(cuid())
-  title     String
-  subject   String
-  type      String   // PDF, VIDEO
-  url       String
-  size      String?
-  createdAt DateTime @default(now())
+  id            String   @id @default(cuid())
+  title         String
+  subject       String
+  type          String   // PDF, VIDEO, Worksheet, Image
+  url           String
+  size          String?
+  isRecommended Boolean  @default(false)
+  views         Int      @default(0)
+  createdAt     DateTime @default(now())
 }
 
 model LeaveApplication {

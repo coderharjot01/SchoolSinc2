@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,16 +10,28 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FileUp, CheckCircle2, Loader2 } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
+import { addDays, format, parseISO } from "date-fns";
 
 export default function StudentLeave() {
     const [formData, setFormData] = useState({
         fullName: "",
         studentId: "",
-        fromDate: "",
+        fromDate: format(new Date(), 'yyyy-MM-dd'),
         toDate: "",
+        totalDays: 1,
         leaveType: "",
         reason: "",
     });
+
+    // Automatically calculate toDate when fromDate or totalDays change
+    useEffect(() => {
+        if (formData.fromDate && formData.totalDays > 0) {
+            const start = parseISO(formData.fromDate);
+            const calculatedEnd = addDays(start, formData.totalDays - 1);
+            setFormData(prev => ({ ...prev, toDate: format(calculatedEnd, 'yyyy-MM-dd') }));
+        }
+    }, [formData.fromDate, formData.totalDays]);
+
     const [sendCopy, setSendCopy] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -37,8 +49,9 @@ export default function StudentLeave() {
                 setFormData({
                     fullName: "",
                     studentId: "",
-                    fromDate: "",
+                    fromDate: format(new Date(), 'yyyy-MM-dd'),
                     toDate: "",
+                    totalDays: 1,
                     leaveType: "",
                     reason: "",
                 });
@@ -111,7 +124,17 @@ export default function StudentLeave() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div className="space-y-2">
+                                <Label className="text-sm">Total Days</Label>
+                                <Input
+                                    type="number"
+                                    min={1}
+                                    placeholder="1"
+                                    value={formData.totalDays}
+                                    onChange={(e) => setFormData({ ...formData, totalDays: parseInt(e.target.value) || 0 })}
+                                />
+                            </div>
                             <div className="space-y-2">
                                 <Label className="text-sm">From Date</Label>
                                 <Input
@@ -121,11 +144,12 @@ export default function StudentLeave() {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-sm">To Date</Label>
+                                <Label className="text-sm">To Date (Calculated)</Label>
                                 <Input
                                     type="date"
                                     value={formData.toDate}
-                                    onChange={(e) => setFormData({ ...formData, toDate: e.target.value })}
+                                    readOnly
+                                    className="bg-slate-50 dark:bg-slate-900 cursor-not-allowed"
                                 />
                             </div>
                         </div>

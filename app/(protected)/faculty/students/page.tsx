@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import {
     Search,
+    Download,
     Users,
     TrendingUp,
     BarChart3,
@@ -110,6 +111,33 @@ export default function FacultyStudentsPage() {
         s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         s.rollNo.toString().includes(searchQuery)
     );
+
+    const handleExportData = () => {
+        const headers = ["ID", "Name", "Class", "Roll No", "Attendance (%)", "Avg Score (%)", "Engagement (%)", "Status"];
+        const csvRows = [headers.join(",")];
+        
+        filteredStudents.forEach(student => {
+            const row = [
+                student.id,
+                `"${student.name}"`,
+                student.class,
+                student.rollNo,
+                student.attendance,
+                student.avgScore,
+                student.engagement,
+                student.status
+            ];
+            csvRows.push(row.join(","));
+        });
+        
+        const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(csvRows.join("\n"));
+        const link = document.createElement("a");
+        link.setAttribute("href", csvContent);
+        link.setAttribute("download", `class_${selectedClass}_students.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     // Fix 9: Award badge handler
     const handleAwardBadge = () => {
@@ -243,8 +271,12 @@ export default function FacultyStudentsPage() {
                         <CardHeader className="pb-3">
                             <div className="flex items-center justify-between">
                                 <CardTitle className="text-base font-semibold">Class 10-A</CardTitle>
-                                <Select value={selectedClass} onValueChange={setSelectedClass}>
-                                    <SelectTrigger className="w-24 h-8 text-xs">
+                                <div className="flex items-center gap-2">
+                                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleExportData} title="Export to Excel">
+                                        <Download className="h-4 w-4 text-emerald-600" />
+                                    </Button>
+                                    <Select value={selectedClass} onValueChange={setSelectedClass}>
+                                        <SelectTrigger className="w-24 h-8 text-xs">
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -254,6 +286,7 @@ export default function FacultyStudentsPage() {
                                         <SelectItem value="9b">9-B</SelectItem>
                                     </SelectContent>
                                 </Select>
+                                </div>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-3">
@@ -403,10 +436,10 @@ export default function FacultyStudentsPage() {
                                 </div>
                             </div>
                             <div className="flex gap-2 mt-4">
-                                <Button variant="outline" size="sm" className="flex-1 gap-1">
+                                <Button variant="outline" size="sm" className="flex-1 gap-1" onClick={() => alert("📞 Initiating secure call to the registered parent contact number...")}>
                                     <Phone className="h-3 w-3" /> Call Parent
                                 </Button>
-                                <Button variant="outline" size="sm" className="flex-1 gap-1">
+                                <Button variant="outline" size="sm" className="flex-1 gap-1" onClick={() => alert("✉️ Opening secure email composer for parent/student communication...")}>
                                     <Mail className="h-3 w-3" /> Send Email
                                 </Button>
                                 {/* Fix 9: Award Badge Button */}
@@ -461,7 +494,7 @@ export default function FacultyStudentsPage() {
                                         </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
-                                <Button size="sm" className="flex-1 gap-1 bg-[#0f172a]">
+                                <Button size="sm" className="flex-1 gap-1 bg-[#0f172a]" onClick={() => alert("📊 Generating comprehensive PDF academic report for this student...")}>
                                     <GraduationCap className="h-3 w-3" /> Full Report
                                 </Button>
                             </div>

@@ -342,14 +342,94 @@ export default function ReportsClient({ userName }: ReportsClientProps) {
                     </div>
                 </TabsContent>
 
-                {/* Placeholder for other tabs */}
-                {["academics", "assignments", "assessments", "activities", "attendance"].map((tab) => (
-                    <TabsContent key={tab} value={tab} className="mt-6">
-                        <Card className="p-8 text-center text-slate-500">
-                            <p>{tab.charAt(0).toUpperCase() + tab.slice(1)} content coming soon...</p>
-                        </Card>
-                    </TabsContent>
-                ))}
+                <TabsContent value="academics" className="mt-6">
+                    <Card className="p-6">
+                        <h3 className="text-lg font-semibold mb-4">Term-wise Grade Distribution</h3>
+                        <div className="space-y-4">
+                            {[
+                                { term: "Term 1", grade: "A", percentage: 89, remarks: "Excellent" },
+                                { term: "Term 2", grade: "A-", percentage: 84, remarks: "Good progress" },
+                                { term: "Term 3", grade: "B+", percentage: 79, remarks: "Needs more focus on Math" },
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div>
+                                        <p className="font-medium">{item.term}</p>
+                                        <p className="text-xs text-slate-500">{item.remarks}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-lg font-bold text-blue-600">{item.grade}</p>
+                                        <p className="text-xs text-slate-400">{item.percentage}%</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="assignments" className="mt-6">
+                    <Card className="p-6">
+                        <h3 className="text-lg font-semibold mb-4">Recent Assignments</h3>
+                        <div className="space-y-3">
+                            {[
+                                { title: "Organic Chemistry Lab Report", status: "Submitted", date: "Oct 12", score: "18/20" },
+                                { title: "Trigonometry Problem Set", status: "Late", date: "Oct 10", score: "15/20" },
+                                { title: "World History Essay", status: "Submitted", date: "Oct 08", score: "19/20" },
+                            ].map((item, i) => (
+                                <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`h-2 w-2 rounded-full ${item.status === 'Submitted' ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                                        <div>
+                                            <p className="text-sm font-medium">{item.title}</p>
+                                            <p className="text-[10px] text-slate-500">{item.date}</p>
+                                        </div>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-semibold">{item.score}</p>
+                                        <p className={`text-[10px] ${item.status === 'Submitted' ? 'text-emerald-600' : 'text-rose-600'}`}>{item.status}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="attendance" className="mt-6">
+                    <Card className="p-6">
+                        <h3 className="text-lg font-semibold mb-4">Monthly Attendance Breakdown</h3>
+                        <div className="space-y-4">
+                            {[
+                                { month: "October", present: 20, total: 22, percentage: 91 },
+                                { month: "September", present: 21, total: 21, percentage: 100 },
+                                { month: "August", present: 18, total: 22, percentage: 82 },
+                            ].map((item, i) => (
+                                <div key={i} className="space-y-1">
+                                    <div className="flex justify-between text-sm">
+                                        <span>{item.month}</span>
+                                        <span className="font-medium">{item.present}/{item.total} days</span>
+                                    </div>
+                                    <div className="w-full bg-slate-100 rounded-full h-2">
+                                        <div 
+                                            className={`h-2 rounded-full ${item.percentage >= 90 ? 'bg-emerald-500' : item.percentage >= 80 ? 'bg-blue-500' : 'bg-rose-500'}`} 
+                                            style={{ width: `${item.percentage}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="assessments" className="mt-6">
+                    <Card className="p-8 text-center text-slate-500">
+                        <p>Assessments content coming soon...</p>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="activities" className="mt-6">
+                    <Card className="p-8 text-center text-slate-500">
+                        <p>Activities content coming soon...</p>
+                    </Card>
+                </TabsContent>
             </Tabs>
         </div>
     );

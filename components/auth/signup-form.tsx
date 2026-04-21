@@ -73,7 +73,7 @@ export default function SignUpForm({
                         {role ? `${role.charAt(0) + role.slice(1).toLowerCase()} Sign Up` : "Sign Up"}
                     </CardTitle>
                     <CardDescription>
-                        Create a new account to access SchoolSync
+                        Create a new account to access HS21Schools
                     </CardDescription>
                 </CardHeader>
                 <CardContent>

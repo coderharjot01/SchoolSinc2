@@ -116,14 +116,7 @@ function StreakWarningDialog({ isOpen, onClose, studentName, streak, onMarkAbsen
 }
 
 export function SpeedGridAttendance() {
-    const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>(() => {
-        // Default all students to present
-        const defaultAttendance: Record<string, AttendanceStatus> = {};
-        studentsData.forEach(student => {
-            defaultAttendance[student.id] = 'present';
-        });
-        return defaultAttendance;
-    });
+    const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>({});
 
     const [showStreaks, setShowStreaks] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -146,8 +139,10 @@ export function SpeedGridAttendance() {
         const student = studentsData.find(s => s.id === studentId);
         const currentStatus = attendance[studentId];
 
-        // Cycle: present -> absent -> late -> present
-        if (currentStatus === 'present') {
+        // Cycle: unmarked -> present -> absent -> late -> present
+        if (!currentStatus) {
+            setAttendance(prev => ({ ...prev, [studentId]: 'present' }));
+        } else if (currentStatus === 'present') {
             // Check if student has a streak worth protecting
             if (student && student.streak >= 5) {
                 setStreakWarning({

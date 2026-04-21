@@ -24,6 +24,8 @@ import {
     Award,
     BarChart3,
     CalendarDays,
+    Medal,
+    Trophy,
     Megaphone,
 } from "lucide-react";
 import Link from "next/link";
@@ -535,6 +537,8 @@ export default function ParentDashboardClient({ userName }: ParentDashboardClien
                                 { label: 'Reports', icon: FileText, color: 'bg-emerald-500', href: '/parent/reports' },
                                 { label: 'Leave', icon: Calendar, color: 'bg-rose-500', href: '/parent/leaves' },
                                 { label: 'Resources', icon: BookOpen, color: 'bg-blue-500', href: '/parent/resources' },
+                                { label: 'Leaderboard', icon: Trophy, color: 'bg-indigo-500', href: '/parent/leaderboard' },
+                                { label: 'Achievements', icon: Medal, color: 'bg-amber-400', href: '/parent/achievements' },
                                 { label: 'Exams', icon: Clock, color: 'bg-purple-500', href: '/parent/exams' },
                                 { label: 'Finance', icon: GraduationCap, color: 'bg-amber-500', href: '/parent/finance' },
                                 { label: 'Profile', icon: User, color: 'bg-slate-600', href: '/parent/profile' },

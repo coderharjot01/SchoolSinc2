@@ -21,6 +21,7 @@ import {
     Heart
 } from "lucide-react";
 import Link from "next/link";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
 interface LoginFormProps extends React.ComponentPropsWithoutRef<"div"> {
     role?: "ADMIN" | "FACULTY" | "STUDENT" | "PARENT";
@@ -156,7 +157,7 @@ export default function LoginForm({
                         <div className="bg-white/20 p-2 rounded-xl backdrop-blur-sm">
                             <GraduationCap className="h-8 w-8" />
                         </div>
-                        <span className="text-2xl font-bold">SchoolSync</span>
+                        <span className="text-2xl font-bold">HS21Schools</span>
                     </Link>
 
                     {/* Main content */}
@@ -189,7 +190,7 @@ export default function LoginForm({
                     {/* Footer */}
                     <div className="text-white/60 text-sm">
                         <p>Secure access for authorized users only.</p>
-                        <p className="mt-1">© 2024 SchoolSync. All rights reserved.</p>
+                        <p className="mt-1">© 2024 HS21Schools. All rights reserved.</p>
                     </div>
                 </div>
             </div>
@@ -202,20 +203,23 @@ export default function LoginForm({
                         <div className="bg-white/20 p-2 rounded-xl">
                             <GraduationCap className="h-6 w-6" />
                         </div>
-                        <span className="text-xl font-bold">SchoolSync</span>
+                        <span className="text-xl font-bold">HS21Schools</span>
                     </Link>
                 </div>
 
                 {/* Form container */}
                 <div className="flex-1 flex flex-col justify-center px-6 py-12 lg:px-12 xl:px-24 bg-white dark:bg-slate-900">
-                    {/* Back link */}
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 mb-8 transition-colors group"
-                    >
-                        <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                        Back to home
-                    </Link>
+                    <div className="flex justify-between items-center mb-8">
+                        {/* Back link */}
+                        <Link
+                            href="/"
+                            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors group"
+                        >
+                            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                            Back to home
+                        </Link>
+                        <LanguageSwitcher />
+                    </div>
 
                     <div className="max-w-md w-full mx-auto">
                         {/* Mobile icon */}

@@ -107,8 +107,8 @@ export default function ProfileClient({ userName, userEmail }: ProfileClientProp
 
             {/* Footer */}
             <div className="text-center text-xs text-slate-400 py-4">
-                <p>SchoolSync High School, City, State</p>
-                <p>Email Id: support@schoolsync.edu</p>
+                <p>HS21Schools High School, City, State</p>
+                <p>Email Id: support@hs21schools.edu</p>
             </div>
         </div>
     );

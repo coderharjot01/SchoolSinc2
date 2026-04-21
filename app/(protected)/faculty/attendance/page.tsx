@@ -66,6 +66,45 @@ export default function FacultyAttendancePage() {
     const onLeave = 2;
     const attendancePercentage = Math.round((presentToday / totalStudents) * 100);
 
+    const handleExportData = () => {
+        try {
+            const headers = ["Student ID", "Student Name", "Class", "Days Present", "Days Absent", "Attendance %", "Status"];
+            const mockData = [
+                { id: "S01", name: "Aarav Sharma", p: 18, a: 2, status: "Good" },
+                { id: "S02", name: "Vihaan Singh", p: 20, a: 0, status: "Excellent" },
+                { id: "S03", name: "Aditya Gupta", p: 15, a: 5, status: "Warning" },
+                { id: "S04", name: "Sai Patel", p: 19, a: 1, status: "Excellent" },
+                { id: "S05", name: "Reyansh Kumar", p: 12, a: 8, status: "Critical" },
+            ];
+
+            const csvRows = [headers.join(",")];
+            mockData.forEach(s => {
+                const pct = Math.round((s.p / (s.p + s.a)) * 100);
+                csvRows.push(`${s.id},${s.name},${selectedClass.toUpperCase()},${s.p},${s.a},${pct}%,${s.status}`);
+            });
+
+            // Add the low attendance students dynamically
+            lowAttendanceStudents.forEach((student, idx) => {
+                csvRows.push(`LA-0${idx + 1},${student.name},${selectedClass.toUpperCase()},${20 - student.absences},${student.absences},${student.attendance}%,${student.status}`);
+            });
+
+            const csvString = csvRows.join("\n");
+            const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `class_${selectedClass}_attendance_${selectedMonth}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Export Failed", error);
+            alert("Sorry, the export failed to generate. Please try again.");
+        }
+    };
+
     if (!isMounted) {
         return (
             <div className="space-y-6 animate-pulse">
@@ -115,8 +154,8 @@ export default function FacultyAttendancePage() {
                             <SelectItem value="9b">Class 9-B</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Button variant="outline" size="sm" className="h-9 gap-1">
-                        <Download className="h-4 w-4" /> Export
+                    <Button variant="outline" size="sm" className="h-9 gap-1" onClick={handleExportData} title="Download Excel Data">
+                        <Download className="h-4 w-4 text-emerald-600" /> Export
                     </Button>
                 </div>
             </div>

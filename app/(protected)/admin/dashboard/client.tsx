@@ -64,10 +64,10 @@ const recentActivity = [
 ];
 
 const pendingApprovals = [
-    { title: 'Leave Requests', count: 8, icon: CalendarDays, color: 'text-amber-600 bg-amber-100' },
-    { title: 'Fee Waivers', count: 3, icon: DollarSign, color: 'text-blue-600 bg-blue-100' },
-    { title: 'New Admissions', count: 12, icon: Users, color: 'text-emerald-600 bg-emerald-100' },
-    { title: 'Resource Requests', count: 5, icon: BookOpen, color: 'text-purple-600 bg-purple-100' },
+    { title: 'Leave Requests', count: 8, icon: CalendarDays, color: 'text-amber-600 bg-amber-100', href: '/admin/leaves' },
+    { title: 'Fee Waivers', count: 3, icon: DollarSign, color: 'text-blue-600 bg-blue-100', href: '/admin/finance' },
+    { title: 'New Admissions', count: 12, icon: Users, color: 'text-emerald-600 bg-emerald-100', href: '/admin/students' },
+    { title: 'Resource Requests', count: 5, icon: BookOpen, color: 'text-purple-600 bg-purple-100', href: '/admin/academics' },
 ];
 
 const upcomingEvents = [
@@ -178,22 +178,24 @@ export default function AdminDashboardClient({ userName }: AdminDashboardClientP
             {/* Pending Approvals Row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {pendingApprovals.map((item, i) => (
-                    <Card key={i} className="hover:shadow-md transition-shadow cursor-pointer">
-                        <CardContent className="pt-4 pb-4">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${item.color}`}>
-                                        <item.icon className="h-5 w-5" />
+                    <Link key={i} href={item.href} className="block">
+                        <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                            <CardContent className="pt-4 pb-4">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${item.color}`}>
+                                            <item.icon className="h-5 w-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground">{item.title}</p>
+                                            <p className="text-xl font-bold">{item.count}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="text-xs text-muted-foreground">{item.title}</p>
-                                        <p className="text-xl font-bold">{item.count}</p>
-                                    </div>
+                                    <ChevronRight className="h-5 w-5 text-slate-300" />
                                 </div>
-                                <ChevronRight className="h-5 w-5 text-slate-300" />
-                            </div>
-                        </CardContent>
-                    </Card>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 ))}
             </div>
 

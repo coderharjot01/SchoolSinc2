@@ -7,14 +7,17 @@ import { Download, FileText, Video, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 
+import { useState, useEffect } from "react";
+
 export default function ParentResourcesPage() {
-    const resources = [
-        { id: 1, title: "Physics Chapter 5 Notes", subject: "Physics", type: "PDF", size: "2.5 MB", date: "Dec 05" },
-        { id: 2, title: "Math Calculus Formulas", subject: "Math", type: "PDF", size: "1.2 MB", date: "Dec 03" },
-        { id: 3, title: "Chemical Bonding Lecture", subject: "Chemistry", type: "Video", size: "150 MB", date: "Nov 28" },
-        { id: 4, title: "English Grammar Workbook", subject: "English", type: "Worksheet", size: "4.0 MB", date: "Nov 25" },
-        { id: 5, title: "Biology Diagram Set", subject: "Biology", type: "Image", size: "5.5 MB", date: "Nov 20" },
-    ];
+    const [resources, setResources] = useState<any[]>([]);
+
+    useEffect(() => {
+        fetch("/api/resources")
+            .then(res => res.json())
+            .then(data => setResources(data))
+            .catch(err => console.error(err));
+    }, []);
 
     return (
         <div className="space-y-6">
@@ -61,7 +64,26 @@ export default function ParentResourcesPage() {
                                 </div>
                                 <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 pl-11 sm:pl-0">
                                     <span className="text-xs text-muted-foreground">{item.size}</span>
-                                    <Button size="sm" variant="outline" className="h-8 sm:h-9 text-xs sm:text-sm">
+                                    <Button 
+                                        size="sm" 
+                                        variant="outline" 
+                                        className="h-8 sm:h-9 text-xs sm:text-sm"
+                                        onClick={() => {
+                                            if (item.type === "Video") {
+                                                window.open(item.url || "https://www.youtube.com", "_blank");
+                                            } else {
+                                                const link = document.createElement("a");
+                                                link.href = item.url;
+                                                link.target = "_blank";
+                                                if(item.url.startsWith("http")) { link.download = ""; } else {
+                                                   link.download = item.title.replace(/ /g, "_") + (item.type === "PDF" ? ".pdf" : ".txt");
+                                                }
+                                                document.body.appendChild(link);
+                                                link.click();
+                                                document.body.removeChild(link);
+                                            }
+                                        }}
+                                    >
                                         <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" /> Download
                                     </Button>
                                 </div>

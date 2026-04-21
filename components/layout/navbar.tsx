@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Menu, ArrowLeft, Settings, Grid3X3, User, LogOut, Pencil, Building2, Flame, Zap } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { LanguageSwitcher } from "./language-switcher";
 
 interface NavbarProps {
     userName: string;
@@ -55,8 +56,8 @@ export function Navbar({ userName, role, isSidebarOpen, onMenuClick }: NavbarPro
                     <Link href={dashboardUrl} className="flex items-center gap-2 mr-4">
                         <Building2 className="h-7 w-7 text-blue-500" />
                         <div className="hidden sm:block">
-                            <span className="text-lg font-bold text-blue-500">School</span>
-                            <span className="text-lg font-bold text-orange-500">Sync</span>
+                            <span className="text-lg font-bold text-blue-500">HS21</span>
+                            <span className="text-lg font-bold text-orange-500 ml-1">Schools</span>
                         </div>
                     </Link>
                 )}
@@ -111,6 +112,8 @@ export function Navbar({ userName, role, isSidebarOpen, onMenuClick }: NavbarPro
 
             {/* Right side */}
             <div className="flex items-center gap-2">
+                <LanguageSwitcher />
+                
                 {/* Settings */}
                 <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
                     <Settings className="h-5 w-5 text-slate-500" />
