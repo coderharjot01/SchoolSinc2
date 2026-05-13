@@ -162,6 +162,24 @@ export function StudentList() {
         }
     );
 
+    const handleExport = () => {
+        const headers = ["ID,Name,Email,Class,Section,Gender,Parent Name,Phone,Joined,Status"];
+        const csvRows = filteredStudents.map(student => {
+            return `"${student.id}","${student.name}","${student.email}","${student.class}","${student.section}","${student.gender}","${student.parentName}","${student.phone}","${student.joined}","${student.status}"`;
+        });
+        
+        const csvString = [headers, ...csvRows].join("\n");
+        const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", \`student_directory_\${new Date().toISOString().split('T')[0]}.csv\`);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     const activeCount = students.filter(s => s.status === "Active").length;
     const inactiveCount = students.filter(s => s.status === "Inactive").length;
 
@@ -231,7 +249,7 @@ export function StudentList() {
                         <CardDescription>Manage and view all student records</CardDescription>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                        <Button variant="outline" size="sm" className="gap-1">
+                        <Button variant="outline" size="sm" className="gap-1" onClick={handleExport}>
                             <Download className="h-4 w-4" /> Export
                         </Button>
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
