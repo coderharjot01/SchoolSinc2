@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  serverExternalPackages: ['@prisma/client', '@prisma/adapter-libsql', '@libsql/client'],
 
   // Optimize images
   images: {
