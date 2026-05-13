@@ -1,5 +1,14 @@
-
 import { PrismaClient } from "@prisma/client";
+import { createClient } from "@libsql/client";
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
+
+// Initialize Turso Client
+const libsql = createClient({
+  url: process.env.TURSO_DATABASE_URL || "file:./dev.db", // Fallback to local if env variables are missing initially
+  authToken: process.env.TURSO_AUTH_TOKEN,
+});
+
+const adapter = new PrismaLibSQL(libsql);
 
 const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient;
@@ -9,6 +18,7 @@ const globalForPrisma = globalThis as unknown as {
 // Create PrismaClient with connection pooling configuration
 const createPrismaClient = () => {
     const client = new PrismaClient({
+        adapter,
         log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
     });
 
@@ -22,11 +32,11 @@ export const prisma = globalForPrisma.prisma || createPrismaClient();
 if (!globalForPrisma.prismaConnected) {
     prisma.$connect()
         .then(() => {
-            console.log("✅ Database connection established");
+            console.log("✅ Turso Database connection established");
             globalForPrisma.prismaConnected = true;
         })
         .catch((error) => {
-            console.error("❌ Failed to connect to database:", error);
+            console.error("❌ Failed to connect to Turso database:", error);
         });
 }
 

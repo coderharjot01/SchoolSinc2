@@ -32,9 +32,9 @@ const roleConfig = {
         icon: ShieldCheck,
         title: "Administrator",
         subtitle: "School Management Portal",
-        color: "blue",
-        gradient: "from-blue-600 to-indigo-700",
-        lightBg: "bg-blue-50",
+        color: "green",
+        gradient: "from-green-600 to-green-700",
+        lightBg: "bg-green-50",
         features: [
             "Complete system administration",
             "Staff & student management",
@@ -46,9 +46,9 @@ const roleConfig = {
         icon: Users,
         title: "Faculty Portal",
         subtitle: "Teaching & Management",
-        color: "emerald",
-        gradient: "from-emerald-600 to-teal-700",
-        lightBg: "bg-emerald-50",
+        color: "green",
+        gradient: "from-green-500 to-green-600",
+        lightBg: "bg-green-50",
         features: [
             "Class & attendance management",
             "Grade entry & assessments",
@@ -60,9 +60,9 @@ const roleConfig = {
         icon: GraduationCap,
         title: "Student Portal",
         subtitle: "Learning & Growth",
-        color: "violet",
-        gradient: "from-violet-600 to-purple-700",
-        lightBg: "bg-violet-50",
+        color: "yellow",
+        gradient: "from-yellow-500 to-yellow-600",
+        lightBg: "bg-yellow-50",
         features: [
             "View grades & performance",
             "Access class timetable",
@@ -74,9 +74,9 @@ const roleConfig = {
         icon: Heart,
         title: "Parent Portal",
         subtitle: "Monitor & Support",
-        color: "rose",
-        gradient: "from-rose-600 to-pink-700",
-        lightBg: "bg-rose-50",
+        color: "yellow",
+        gradient: "from-yellow-400 to-yellow-500",
+        lightBg: "bg-yellow-50",
         features: [
             "Track child's progress",
             "View attendance & performance",
@@ -265,7 +265,7 @@ export default function LoginForm({
                                     </Label>
                                     <a
                                         href="#"
-                                        className="text-sm text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300"
+                                        className="text-sm text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
                                     >
                                         Forgot password?
                                     </a>
@@ -325,7 +325,7 @@ export default function LoginForm({
                                 Don&apos;t have an account?{" "}
                                 <Link
                                     href={`/auth/signup/${role.toLowerCase()}`}
-                                    className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-semibold"
+                                    className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-semibold"
                                 >
                                     Contact administrator
                                 </Link>
@@ -364,9 +364,9 @@ export default function LoginForm({
                 {/* Footer */}
                 <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800 text-center text-xs text-slate-500 dark:text-slate-400 lg:px-12">
                     By signing in, you agree to our{" "}
-                    <a href="#" className="text-orange-600 hover:underline">Terms of Service</a>
+                    <a href="#" className="text-green-600 hover:underline">Terms of Service</a>
                     {" "}and{" "}
-                    <a href="#" className="text-orange-600 hover:underline">Privacy Policy</a>
+                    <a href="#" className="text-green-600 hover:underline">Privacy Policy</a>
                 </div>
             </div>
         </div>

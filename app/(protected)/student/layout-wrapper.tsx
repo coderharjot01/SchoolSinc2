@@ -1,6 +1,7 @@
 "use client";
 
 import { PortalLayout } from "@/components/layout/portal-layout";
+import { FloatingAIBot } from "@/components/ui/floating-ai-bot";
 
 interface LayoutWrapperProps {
     children: React.ReactNode;
@@ -12,6 +13,7 @@ export function PortalLayoutWrapper({ children, role, userName }: LayoutWrapperP
     return (
         <PortalLayout role={role} userName={userName}>
             {children}
+            <FloatingAIBot />
         </PortalLayout>
     );
 }

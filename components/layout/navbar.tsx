@@ -6,6 +6,7 @@ import { Menu, ArrowLeft, Settings, Grid3X3, User, LogOut, Pencil, Building2, Fl
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface NavbarProps {
     userName: string;
@@ -54,10 +55,10 @@ export function Navbar({ userName, role, isSidebarOpen, onMenuClick }: NavbarPro
                 {/* Logo - only show when sidebar is hidden */}
                 {!isSidebarOpen && (
                     <Link href={dashboardUrl} className="flex items-center gap-2 mr-4">
-                        <Building2 className="h-7 w-7 text-blue-500" />
+                        <Building2 className="h-7 w-7 text-green-600" />
                         <div className="hidden sm:block">
-                            <span className="text-lg font-bold text-blue-500">HS21</span>
-                            <span className="text-lg font-bold text-orange-500 ml-1">Schools</span>
+                            <span className="text-lg font-bold text-green-600">HS21</span>
+                            <span className="text-lg font-bold text-yellow-500 ml-1">Schools</span>
                         </div>
                     </Link>
                 )}
@@ -85,23 +86,23 @@ export function Navbar({ userName, role, isSidebarOpen, onMenuClick }: NavbarPro
             {role === "student" && (
                 <div className="hidden md:flex items-center gap-3">
                     {/* Streak Counter */}
-                    <div className="flex items-center gap-1.5 bg-gradient-to-r from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 px-3 py-1.5 rounded-full border border-orange-200 dark:border-orange-700">
-                        <Flame className="h-4 w-4 text-orange-500" />
-                        <span className="text-sm font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                    <div className="flex items-center gap-1.5 bg-gradient-to-r from-yellow-100 to-green-100 dark:from-yellow-900/30 dark:to-green-900/30 px-3 py-1.5 rounded-full border border-yellow-200 dark:border-yellow-700">
+                        <Flame className="h-4 w-4 text-yellow-500" />
+                        <span className="text-sm font-bold bg-gradient-to-r from-yellow-600 to-green-600 bg-clip-text text-transparent">
                             {studentStats.streak}
                         </span>
-                        <span className="text-xs text-orange-600 dark:text-orange-400 font-medium">Day Streak</span>
+                        <span className="text-xs text-yellow-600 dark:text-yellow-400 font-medium">Day Streak</span>
                     </div>
 
                     {/* XP Progress */}
-                    <div className="flex items-center gap-2 bg-gradient-to-r from-purple-100 to-blue-100 dark:from-purple-900/30 dark:to-blue-900/30 px-3 py-1.5 rounded-full border border-purple-200 dark:border-purple-700">
-                        <Zap className="h-4 w-4 text-purple-500" />
-                        <span className="text-xs font-bold text-purple-700 dark:text-purple-300">
+                    <div className="flex items-center gap-2 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-800/30 px-3 py-1.5 rounded-full border border-green-200 dark:border-green-700">
+                        <Zap className="h-4 w-4 text-green-500" />
+                        <span className="text-xs font-bold text-green-700 dark:text-green-300">
                             Lv.{studentStats.level}
                         </span>
                         <div className="w-16 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all"
+                                className="h-full bg-gradient-to-r from-green-500 to-green-400 rounded-full transition-all"
                                 style={{ width: `${xpProgress}%` }}
                             />
                         </div>
@@ -113,6 +114,7 @@ export function Navbar({ userName, role, isSidebarOpen, onMenuClick }: NavbarPro
             {/* Right side */}
             <div className="flex items-center gap-2">
                 <LanguageSwitcher />
+                <ThemeToggle />
                 
                 {/* Settings */}
                 <button className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">

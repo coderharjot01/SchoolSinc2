@@ -28,6 +28,7 @@ import {
     Plane,
     LucideIcon,
     CalendarDays,
+    Bot,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -147,6 +148,7 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                         { label: "Resources", href: "/student/resources", icon: BookOpen },
                         { label: "Assignments", href: "/student/exams", icon: FileText },
                         { label: "Grades & Reports", href: "/student/performance", icon: BarChart2 },
+                        { label: "AI Tutor", href: "/student/ai-assistant", icon: Bot },
                     ]
                 },
                 {
@@ -235,10 +237,10 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                 {/* Logo Header */}
                 <div className="h-14 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4">
                     <Link href={`/${role}/dashboard`} className="flex items-center gap-2">
-                        <Building2 className="h-7 w-7 text-blue-500" strokeWidth={2} />
+                        <Building2 className="h-7 w-7 text-green-600" strokeWidth={2} />
                         <div>
-                            <span className="text-lg font-bold text-blue-500">HS21</span>
-                            <span className="text-lg font-bold text-orange-500 ml-1">Schools</span>
+                            <span className="text-lg font-bold text-green-600">HS21</span>
+                            <span className="text-lg font-bold text-yellow-500 ml-1">Schools</span>
                         </div>
                     </Link>
                     <button
@@ -271,14 +273,14 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                                             className={cn(
                                                 "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                                                 isActive
-                                                    ? "bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 shadow-sm"
+                                                    ? "bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400 shadow-sm"
                                                     : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100"
                                             )}
                                         >
                                             <item.icon
                                                 className={cn(
                                                     "h-[18px] w-[18px]",
-                                                    isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"
+                                                    isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 dark:text-slate-500"
                                                 )}
                                                 strokeWidth={2}
                                             />
@@ -327,9 +329,9 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                         onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                         className="w-full px-3 py-3 flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                     >
-                        <Avatar className="h-9 w-9 border-2 border-blue-100 dark:border-blue-900">
+                        <Avatar className="h-9 w-9 border-2 border-green-100 dark:border-green-900">
                             <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`} />
-                            <AvatarFallback className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 text-sm font-semibold">
+                            <AvatarFallback className="bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 text-sm font-semibold">
                                 {userName.slice(0, 2).toUpperCase()}
                             </AvatarFallback>
                         </Avatar>
