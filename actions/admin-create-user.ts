@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { Role } from "@prisma/client";
 
 const DEFAULT_PASSWORD = "Abhi@99";
 
@@ -33,7 +32,7 @@ export async function createStudentUser(
                 email,
                 password: DEFAULT_PASSWORD,
                 name,
-                role: Role.STUDENT,
+                role: "STUDENT",
             },
         });
 
@@ -67,7 +66,7 @@ export async function createFacultyUser(
                 email,
                 password: DEFAULT_PASSWORD,
                 name,
-                role: Role.FACULTY,
+                role: "FACULTY",
             },
         });
 
@@ -118,7 +117,7 @@ export async function createParentUser(
                 email: parentEmail,
                 password: DEFAULT_PASSWORD,
                 name: parentName || "Parent",
-                role: Role.PARENT,
+                role: "PARENT",
             },
         });
 
