@@ -4,14 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Notice } from "@/app/(protected)/admin/notices/page";
 
-const notices = [
-    { title: "Mid-term Examination Schedule Released", desc: "The mid-term examination schedule for all classes has been published. Students are advised to check their respective timetables...", date: "Dec 15, 2024", audience: "Students", type: "Urgent", tag: "Academic" },
-    { title: "Fee payment Reminder - January 2025", desc: "This is a friendly reminder that the fee payment for January 2025 is due by December 21, 2024...", date: "Dec 15, 2024", audience: "Students", type: "Fee" },
-    { title: "Annual Sports Day - Registration Open", desc: "Registration for Annual Sports Day 2025 is now open. Student can register for various events through the sports department...", date: "Dec 15, 2024", audience: "Students", type: "Sports" },
-];
+interface NoticeBoardProps {
+    notices: Notice[];
+}
 
-export function NoticeBoard() {
+export function NoticeBoard({ notices }: NoticeBoardProps) {
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between">
@@ -40,6 +39,11 @@ export function NoticeBoard() {
                         </div>
                     </div>
                 ))}
+                {notices.length === 0 && (
+                    <div className="text-center text-muted-foreground py-8">
+                        No notices found.
+                    </div>
+                )}
             </CardContent>
         </Card>
     );
