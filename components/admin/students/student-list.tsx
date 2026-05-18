@@ -82,6 +82,7 @@ export function StudentList() {
     });
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [isExporting, setIsExporting] = useState(false);
 
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -234,7 +235,11 @@ export function StudentList() {
         }
     );
 
-    const handleExport = () => {
+    const handleExport = async () => {
+        setIsExporting(true);
+        // Add a slight realistic delay to show the interactive loader to the user
+        await new Promise(resolve => setTimeout(resolve, 800));
+
         const headers = ["ID,Name,Email,Class,Section,Gender,Parent Name,Phone,Joined,Status"];
         const csvRows = filteredStudents.map(student => {
             return `"${student.id}","${student.name}","${student.email}","${student.class}","${student.section}","${student.gender}","${student.parentName}","${student.phone}","${student.joined}","${student.status}"`;
@@ -250,6 +255,8 @@ export function StudentList() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        setIsExporting(false);
     };
 
     const activeCount = students.filter(s => s.status === "Active").length;
@@ -321,8 +328,9 @@ export function StudentList() {
                         <CardDescription>Manage and view all student records</CardDescription>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                        <Button variant="outline" size="sm" className="gap-1" onClick={handleExport}>
-                            <Download className="h-4 w-4" /> Export
+                        <Button variant="outline" size="sm" className="gap-1" onClick={handleExport} disabled={isExporting}>
+                            {isExporting ? <Loader2 className="h-4 w-4 animate-spin text-slate-500" /> : <Download className="h-4 w-4" />} 
+                            {isExporting ? "Exporting..." : "Export"}
                         </Button>
                         <input
                             type="file"
@@ -339,7 +347,7 @@ export function StudentList() {
                             disabled={isUploading}
                         >
                             {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-                            Bulk Import (Excel)
+                            {isUploading ? "Uploading..." : "Bulk Import (Excel)"}
                         </Button>
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>
