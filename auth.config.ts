@@ -5,6 +5,10 @@ import type { NextAuthConfig } from "next-auth";
 // Keep this file light with only configuration that works in Edge runtime.
 
 export const authConfig = {
+    session: {
+        strategy: "jwt",
+        maxAge: 15 * 60, // 15 minutes expiration
+    },
     pages: {
         signIn: "/auth/login",
     },

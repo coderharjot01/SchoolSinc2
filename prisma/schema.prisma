@@ -16,6 +16,8 @@ model User {
   password  String
   name      String?
   role      String   @default("STUDENT")
+  twoFactorSecret String?
+  twoFactorEnabled Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
