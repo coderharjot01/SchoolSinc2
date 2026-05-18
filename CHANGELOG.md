@@ -52,3 +52,21 @@ This document tracks all major architectural changes, bug fixes, and feature imp
   - Built `/admin/security`: A dedicated settings page for Administrators.
   - Implemented the `otplib` and `qrcode.react` libraries. Clicking "Set Up 2FA" generates a secure, unique secret in the Postgres database and renders a live **QR Code** on the screen.
   - Added a verification input box allowing the Admin to scan the code with Google Authenticator and type in the 6-digit pin to permanently secure their account.
+
+---
+
+## 📅 Update 7: Authentication Debugging & Theme Alignment
+**Goal:** Fix Vercel build errors, login bugs, and align new pages with the brand design.
+- **Build Stabilization:** Resolved severe Next.js build errors by explicitly installing `bcryptjs` and fixing strict ESM `otplib` and `prisma` import resolutions for Vercel production.
+- **Account Recovery Theme:** Completely redesigned the Forgot Password and Secure Reset pages. Swapped the default blue placeholder logos with the official green "HS21Schools" `GraduationCap` theme and custom UI shadows.
+- **Vercel Routing Bug:** Fixed an issue where the simulated email link crashed on live deployment by replacing the missing `NEXT_PUBLIC_APP_URL` environment variable dependency with smart relative path routing.
+- **Hybrid Legacy Authentication:** Discovered that NextAuth was comparing plain-text passwords, locking out newly created secure passwords. Rewrote the login authorization logic to intelligently support **both** legacy plain-text passwords and highly secure `bcryptjs` hashed passwords.
+
+---
+
+## 📅 Update 8: Bulk Excel Import
+**Goal:** Allow administrators to rapidly import hundreds of students and parents simultaneously.
+- **Excel Parsing Interface:** Integrated the `xlsx` library to parse `.xlsx`, `.xls`, and `.csv` sheets entirely on the client-side without crashing the server.
+- **Bulk Creation Logic:** Created a new `bulkCreateStudents` server action. It iterates through the Excel file, skips duplicates, securely hashes default passwords using `bcryptjs`, and instantly creates a new `STUDENT` user.
+- **Auto-Parent Generation:** If a "Parent Name" column is provided in the Excel sheet, the system automatically provisions an associated `PARENT` account for that student simultaneously.
+- **UI Integration:** Added a responsive "Bulk Import (Excel)" button to the Student Management directory equipped with loading states, error handling, and success notifications.
