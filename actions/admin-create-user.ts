@@ -131,3 +131,57 @@ export async function createParentUser(
         return { error: `Failed to create parent user: ${error instanceof Error ? error.message : String(error)}` };
     }
 }
+
+export async function bulkCreateStudents(students: { name: string, email: string, password?: string, parentName?: string }[]) {
+    try {
+        const { hash } = await import("bcryptjs");
+        let successCount = 0;
+        let skipCount = 0;
+
+        for (const s of students) {
+            if (!s.email || !s.name) {
+                skipCount++;
+                continue;
+            }
+
+            const existing = await prisma.user.findUnique({ where: { email: s.email } });
+            if (existing) {
+                skipCount++;
+                continue;
+            }
+
+            const rawPassword = s.password || DEFAULT_PASSWORD;
+            const hashedPassword = await hash(rawPassword, 10);
+
+            await prisma.user.create({
+                data: {
+                    email: s.email,
+                    password: hashedPassword,
+                    name: s.name,
+                    role: "STUDENT",
+                }
+            });
+
+            if (s.parentName) {
+                const parentEmail = `parent.${s.email}`;
+                const existingParent = await prisma.user.findUnique({ where: { email: parentEmail } });
+                if (!existingParent) {
+                    await prisma.user.create({
+                        data: {
+                            email: parentEmail,
+                            password: hashedPassword,
+                            name: s.parentName,
+                            role: "PARENT",
+                        }
+                    });
+                }
+            }
+            successCount++;
+        }
+
+        return { success: `Successfully imported ${successCount} students. Skipped ${skipCount} invalid or duplicate rows.` };
+    } catch (error) {
+        console.error("Bulk create error:", error);
+        return { error: "Failed to process bulk upload. Please check your Excel format." };
+    }
+}

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import * as XLSX from "xlsx";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,7 @@ import {
     MoreVertical,
     Loader2,
 } from "lucide-react";
-import { createStudentUser, createParentUser } from "@/actions/admin-create-user";
+import { createStudentUser, createParentUser, bulkCreateStudents } from "@/actions/admin-create-user";
 import { Badge } from "@/components/ui/badge";
 import {
     Dialog,
@@ -79,6 +80,61 @@ export function StudentList() {
         parentName: "",
         phone: "",
     });
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isUploading, setIsUploading] = useState(false);
+
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        setIsUploading(true);
+        setError(null);
+        setSuccess(null);
+
+        try {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = new Uint8Array(e.target?.result as ArrayBuffer);
+                    const workbook = XLSX.read(data, { type: "array" });
+                    const sheetName = workbook.SheetNames[0];
+                    const sheet = workbook.Sheets[sheetName];
+                    const jsonData = XLSX.utils.sheet_to_json<any>(sheet);
+
+                    // Map Excel columns to our expected format
+                    const students = jsonData.map(row => ({
+                        name: row.Name || row.name || row["Student Name"],
+                        email: row.Email || row.email || row["Email Address"],
+                        password: row.Password || row.password || row["Account Password"],
+                        parentName: row.ParentName || row.parentName || row["Parent Name"]
+                    })).filter(s => s.name && s.email);
+
+                    if (students.length === 0) {
+                        setError("No valid students found in Excel. Ensure you have 'Name' and 'Email' columns.");
+                        setIsUploading(false);
+                        return;
+                    }
+
+                    const result = await bulkCreateStudents(students);
+                    if (result.success) {
+                        setSuccess(result.success);
+                        // Optional: you could refresh the student list here by fetching from DB
+                    } else {
+                        setError(result.error || "Upload failed");
+                    }
+                } catch (err) {
+                    setError("Failed to parse Excel file.");
+                } finally {
+                    setIsUploading(false);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        } catch (err) {
+            setError("Error reading file.");
+            setIsUploading(false);
+        }
+    };
 
     const handleAddStudent = async () => {
         if (!newStudent.name || !newStudent.email || !newStudent.class || !newStudent.section || !newStudent.gender) {
@@ -252,6 +308,23 @@ export function StudentList() {
                         <Button variant="outline" size="sm" className="gap-1" onClick={handleExport}>
                             <Download className="h-4 w-4" /> Export
                         </Button>
+                        <input
+                            type="file"
+                            accept=".xlsx, .xls, .csv"
+                            className="hidden"
+                            ref={fileInputRef}
+                            onChange={handleFileUpload}
+                        />
+                        <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="gap-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border-emerald-200"
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={isUploading}
+                        >
+                            {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+                            Bulk Import (Excel)
+                        </Button>
                         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                             <DialogTrigger asChild>
                                 <Button size="sm" className="bg-blue-600 hover:bg-blue-700 gap-1">
@@ -397,6 +470,18 @@ export function StudentList() {
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                    {/* Status Alerts */}
+                    {error && (
+                        <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-md text-sm">
+                            {error}
+                        </div>
+                    )}
+                    {success && (
+                        <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-md text-sm">
+                            {success}
+                        </div>
+                    )}
+                    
                     {/* Search and Filter */}
                     <div className="flex flex-col sm:flex-row gap-3">
                         <div className="relative flex-1">
