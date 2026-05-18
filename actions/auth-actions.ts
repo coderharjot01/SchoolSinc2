@@ -14,7 +14,7 @@ export async function requestPasswordReset(email: string) {
         data: { email, token, expires }
     });
 
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/auth/reset-password?token=${token}`;
+    const resetUrl = `/auth/reset-password?token=${token}`;
     
     // In production, send this via email using Resend or Nodemailer.
     // For demo purposes, we return it to display on the screen.
