@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import * as XLSX from "xlsx";
 import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -93,17 +94,43 @@ export default function AdminUpdatesPage() {
         // Simulate a slight delay for realistic UX
         await new Promise(resolve => setTimeout(resolve, 800));
 
-        const headers = ["ID,Staff Name,Role,Action,Details,Type,Timestamp,Status"];
-        const csvRows = filteredActivities.map(activity => {
-            return `"${activity.id}","${activity.staffName}","${activity.role}","${activity.action}","${activity.details}","${activity.type}","${activity.timestamp}","${activity.status}"`;
-        });
+        // Format data for Excel
+        const exportData = filteredActivities.map(activity => ({
+            "Activity ID": activity.id,
+            "Staff Member": activity.staffName,
+            "Role": activity.role,
+            "Action Performed": activity.action,
+            "Detailed Description": activity.details,
+            "Category": activity.type,
+            "Time": activity.timestamp,
+            "Status": activity.status
+        }));
+
+        // Create a new workbook and add the data
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
         
-        const csvString = [headers, ...csvRows].join("\n");
-        const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+        // Make columns wider and more readable
+        worksheet['!cols'] = [
+            { wch: 15 }, // ID
+            { wch: 20 }, // Staff Name
+            { wch: 15 }, // Role
+            { wch: 40 }, // Action
+            { wch: 60 }, // Details
+            { wch: 15 }, // Category
+            { wch: 15 }, // Time
+            { wch: 15 }  // Status
+        ];
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Activity Log");
+        
+        // Generate buffer and trigger download
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.setAttribute("href", url);
-        link.setAttribute("download", `activity_log_${new Date().toISOString().split('T')[0]}.csv`);
+        link.setAttribute("download", `System_Activity_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
         link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
