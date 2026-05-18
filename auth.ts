@@ -61,8 +61,17 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                             return null;
                         }
 
-                        // Simple password match for now
-                        if (password === user.password) {
+                        // Support both bcrypt hashes (new) and plaintext (legacy)
+                        const { compare } = await import("bcryptjs");
+                        let passwordMatch = false;
+                        
+                        if (user.password.startsWith("$2a$") || user.password.startsWith("$2b$") || user.password.startsWith("$2y$")) {
+                            passwordMatch = await compare(password, user.password);
+                        } else {
+                            passwordMatch = password === user.password;
+                        }
+
+                        if (passwordMatch) {
                             console.log("Password match success");
                             return {
                                 id: String(user.id),
@@ -72,8 +81,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
                             } as any;
                         } else {
                             console.log("Password mismatch");
-                            console.log("Expected:", user.password);
-                            console.log("Received:", password);
                             return null;
                         }
                     } catch (error) {
