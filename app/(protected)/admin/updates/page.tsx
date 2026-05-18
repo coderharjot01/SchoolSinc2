@@ -86,6 +86,31 @@ const mockActivities: Activity[] = [
 export default function AdminUpdatesPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [filterType, setFilterType] = useState<string>("All");
+    const [isExporting, setIsExporting] = useState(false);
+
+    const handleExport = async () => {
+        setIsExporting(true);
+        // Simulate a slight delay for realistic UX
+        await new Promise(resolve => setTimeout(resolve, 800));
+
+        const headers = ["ID,Staff Name,Role,Action,Details,Type,Timestamp,Status"];
+        const csvRows = filteredActivities.map(activity => {
+            return `"${activity.id}","${activity.staffName}","${activity.role}","${activity.action}","${activity.details}","${activity.type}","${activity.timestamp}","${activity.status}"`;
+        });
+        
+        const csvString = [headers, ...csvRows].join("\n");
+        const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `activity_log_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = "hidden";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        setIsExporting(false);
+    };
 
     const getIconForType = (type: string) => {
         switch(type) {
@@ -220,8 +245,12 @@ export default function AdminUpdatesPage() {
                             <Download className="h-8 w-8 text-white/80 mx-auto mb-3" />
                             <h3 className="font-semibold mb-2">Export Activity Log</h3>
                             <p className="text-xs text-emerald-100 mb-4">Download a detailed CSV report of all system activities for compliance and auditing.</p>
-                            <Button className="w-full bg-white text-emerald-700 hover:bg-emerald-50">
-                                Generate Report
+                            <Button 
+                                className="w-full bg-white text-emerald-700 hover:bg-emerald-50"
+                                onClick={handleExport}
+                                disabled={isExporting}
+                            >
+                                {isExporting ? "Generating..." : "Generate Report"}
                             </Button>
                         </CardContent>
                     </Card>
