@@ -263,12 +263,12 @@ export default function LoginForm({
                                     <Label htmlFor="password" className="text-slate-700 dark:text-slate-300">
                                         Password
                                     </Label>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        href="/auth/forgot-password"
                                         className="text-sm text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
                                     >
                                         Forgot password?
-                                    </a>
+                                    </Link>
                                 </div>
                                 <div className="relative">
                                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
