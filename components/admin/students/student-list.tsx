@@ -118,20 +118,23 @@ export function StudentList() {
                     const result = await bulkCreateStudents(students);
                     if (result.success) {
                         setSuccess(result.success);
-                        // Dynamically update the UI with the new students
-                        const newStudentsForUI: Student[] = students.map((s, index) => ({
-                            id: `NEW${Math.floor(Math.random() * 100000) + index}`,
-                            name: s.name,
-                            email: s.email,
-                            class: "N/A",
-                            section: "-",
-                            gender: "N/A",
-                            parentName: s.parentName || "N/A",
-                            phone: "N/A",
-                            joined: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                            status: "Active"
-                        }));
-                        setStudents(prev => [...newStudentsForUI, ...prev]);
+                        
+                        // Dynamically update the UI with the ACTUAL successfully inserted students
+                        if (result.newStudents && result.newStudents.length > 0) {
+                            const newStudentsForUI: Student[] = result.newStudents.map((s: any, index: number) => ({
+                                id: `NEW${Math.floor(Math.random() * 100000) + index}`,
+                                name: s.name,
+                                email: s.email,
+                                class: "N/A",
+                                section: "-",
+                                gender: "N/A",
+                                parentName: s.parentName || "N/A",
+                                phone: "N/A",
+                                joined: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                                status: "Active"
+                            }));
+                            setStudents(prev => [...newStudentsForUI, ...prev]);
+                        }
                     } else {
                         setError(result.error || "Upload failed");
                     }

@@ -137,6 +137,7 @@ export async function bulkCreateStudents(students: { name: string, email: string
         const { hash } = await import("bcryptjs");
         let successCount = 0;
         let skipCount = 0;
+        const newlyCreated = [];
 
         for (const s of students) {
             if (!s.email || !s.name) {
@@ -177,9 +178,17 @@ export async function bulkCreateStudents(students: { name: string, email: string
                 }
             }
             successCount++;
+            newlyCreated.push({
+                name: s.name,
+                email: s.email,
+                parentName: s.parentName || "N/A"
+            });
         }
 
-        return { success: `Successfully imported ${successCount} students. Skipped ${skipCount} invalid or duplicate rows.` };
+        return { 
+            success: `Successfully imported ${successCount} students. Skipped ${skipCount} invalid or duplicate rows.`,
+            newStudents: newlyCreated
+        };
     } catch (error) {
         console.error("Bulk create error:", error);
         return { error: "Failed to process bulk upload. Please check your Excel format." };
