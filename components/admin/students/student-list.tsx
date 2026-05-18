@@ -118,7 +118,20 @@ export function StudentList() {
                     const result = await bulkCreateStudents(students);
                     if (result.success) {
                         setSuccess(result.success);
-                        // Optional: you could refresh the student list here by fetching from DB
+                        // Dynamically update the UI with the new students
+                        const newStudentsForUI: Student[] = students.map((s, index) => ({
+                            id: `NEW${Math.floor(Math.random() * 100000) + index}`,
+                            name: s.name,
+                            email: s.email,
+                            class: "N/A",
+                            section: "-",
+                            gender: "N/A",
+                            parentName: s.parentName || "N/A",
+                            phone: "N/A",
+                            joined: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                            status: "Active"
+                        }));
+                        setStudents(prev => [...newStudentsForUI, ...prev]);
                     } else {
                         setError(result.error || "Upload failed");
                     }
