@@ -1,8 +1,9 @@
 "use server";
 
 import { auth } from "@/auth";
-import prisma from "@/lib/prisma";
-import { authenticator } from "otplib";
+import { prisma } from "@/lib/prisma";
+import * as otplib from "otplib";
+const { authenticator } = otplib;
 
 export async function generateTwoFactorSecret() {
     const session = await auth();
