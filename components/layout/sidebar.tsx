@@ -29,6 +29,7 @@ import {
     LucideIcon,
     CalendarDays,
     Bot,
+    Activity,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -87,6 +88,12 @@ export function Sidebar({ role, isOpen, isDesktop, onClose, userName = "Student"
                         { label: "Event Management", href: "/admin/events", icon: Calendar },
                         { label: "Notice & Communication", href: "/admin/notices", icon: Megaphone },
                         { label: "Meeting Management", href: "/admin/meetings", icon: Video },
+                    ]
+                },
+                {
+                    title: "Monitoring",
+                    items: [
+                        { label: "Activity Updates", href: "/admin/updates", icon: Activity },
                     ]
                 },
             ];
