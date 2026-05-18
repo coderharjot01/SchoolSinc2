@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { requestPasswordReset } from "@/actions/auth-actions";
 import Link from "next/link";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2, Mail, GraduationCap } from "lucide-react";
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
@@ -35,11 +35,14 @@ export default function ForgotPasswordPage() {
         <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50 p-4">
             <div className="mb-8 text-center">
                 <div className="flex justify-center mb-4">
-                    <div className="h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                        <span className="text-2xl font-bold text-white">S2</span>
-                    </div>
+                    <Link href="/" className="flex flex-col items-center gap-3 text-slate-900 group">
+                        <div className="bg-green-600 p-3 rounded-2xl shadow-lg shadow-green-600/20 group-hover:scale-105 transition-transform">
+                            <GraduationCap className="h-8 w-8 text-white" />
+                        </div>
+                        <span className="text-xl font-bold">HS21Schools</span>
+                    </Link>
                 </div>
-                <h1 className="text-2xl font-bold text-slate-900">Account Recovery</h1>
+                <h1 className="text-lg font-medium text-slate-500">Account Recovery</h1>
             </div>
             <Card className="w-full max-w-md">
                 <CardHeader>
@@ -57,7 +60,7 @@ export default function ForgotPasswordPage() {
                                 <div className="p-4 bg-amber-50 text-amber-800 text-sm rounded-lg border border-amber-200 font-mono break-all">
                                     <strong>[DEV MODE SIMULATED EMAIL]:</strong> Click here to reset: 
                                     <br/><br/>
-                                    <Link href={debugUrl} className="text-blue-600 underline hover:text-blue-800 font-semibold">
+                                    <Link href={debugUrl} className="text-green-600 underline hover:text-green-800 font-semibold">
                                         Secure Reset Link
                                     </Link>
                                 </div>
@@ -77,7 +80,7 @@ export default function ForgotPasswordPage() {
                     </CardContent>
                     <CardFooter className="flex flex-col gap-4">
                         {!success && (
-                            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading || !email}>
+                            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 text-white shadow-md shadow-green-600/20" disabled={loading || !email}>
                                 {loading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : null}
                                 Send Reset Link
                             </Button>
